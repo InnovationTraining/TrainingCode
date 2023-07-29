@@ -14,5 +14,5 @@ dependencyResolutionManagement {
         maven { url 'https://developer.huawei.com/repo/' }
     }
 }
-rootProject.name = "CompleteTrainingCode"
+rootProject.name = "TrainingCode"
 include ':app'
