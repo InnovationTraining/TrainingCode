@@ -64,30 +64,19 @@ public class MLActivity extends AppCompatActivity {
 
     private void onTextAnalyse() {
         mTvResult.setText("");
-        //方式二：使用自定义参数MLLocalTextSetting配置端侧文本分析器。
-        MLLocalTextSetting setting = new MLLocalTextSetting.Factory()
-                .setOCRMode(MLLocalTextSetting.OCR_DETECT_MODE)
-                // 设置识别语种。
-                .setLanguage("zh")
-                .create();
-        MLTextAnalyzer analyzer = MLAnalyzerFactory.getInstance().getLocalTextAnalyzer(setting);
+        // TODO 通过 MLLocalTextSetting.Factory 获取 MLLocalTextSetting 端侧文本分析器设置类。
+
+        // TODO MLAnalyzerFactory + MLLocalTextSetting 生成文本分析器对象 MLTextAnalyzer
+
         mIvOriginalImage.setImageResource(R.mipmap.ml_image);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ml_image);
-        // 通过bitmap创建MLFrame，bitmap为输入的Bitmap格式图片数据。
-        MLFrame frame = MLFrame.fromBitmap(bitmap);
-        Task<MLText> task = analyzer.asyncAnalyseFrame(frame);
-        task.addOnSuccessListener(new OnSuccessListener<MLText>() {
-            @Override
-            public void onSuccess(MLText text) {
-                // 识别成功处理。
-                onDealAnalyzerText(text);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                // 识别失败处理。
-            }
-        });
+        // TODO 通过 MLFrame + bitmap 获取 MLFrame对象
+
+        // TODO 通过文本分析器对象 MLTextAnalyzer ，调用异步分析方法，并添加成功OnSuccessListener和失败OnFailureListener回调
+
+        // TODO 分析成功，则调用 onDealAnalyzerText(text) 方法，解析分析的结果
+
+        // TODO 分析失败，打印日志Log.e("---ML---", "ERROR:" + e.getMessage());
     }
 
     private void onDealAnalyzerText(MLText mlText) {
@@ -111,36 +100,27 @@ public class MLActivity extends AppCompatActivity {
 
     private void onDocumentSkew() {
         mTvResult.setText("");
-        MLDocumentSkewCorrectionAnalyzerSetting setting = new MLDocumentSkewCorrectionAnalyzerSetting.Factory().create();
-        MLDocumentSkewCorrectionAnalyzer analyzer = MLDocumentSkewCorrectionAnalyzerFactory.getInstance()
-                .getDocumentSkewCorrectionAnalyzer(setting);
+        // TODO 通过 MLDocumentSkewCorrectionAnalyzerSetting.Factory 获取 MLDocumentSkewCorrectionAnalyzerSetting 端侧文档校正设置类。
+
+        // TODO MLDocumentSkewCorrectionAnalyzerFactory + MLDocumentSkewCorrectionAnalyzerSetting 生成文档校正分析器对象 MLDocumentSkewCorrectionAnalyzer
 
         mIvOriginalImage.setImageResource(R.mipmap.ml_image_skew);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ml_image_skew);
-        MLFrame frame = MLFrame.fromBitmap(bitmap);
-        // asyncDocumentSkewDetect异步调用。
-        Task<MLDocumentSkewDetectResult> detectTask = analyzer.asyncDocumentSkewDetect(frame);
-        detectTask.addOnSuccessListener(new OnSuccessListener<MLDocumentSkewDetectResult>() {
-            @Override
-            public void onSuccess(MLDocumentSkewDetectResult detectResult) {
-                // 检测成功。
-                onInitText("文档校正检测成功");
-                onSkewDetect(analyzer, frame, detectResult);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                // 检测失败。
-                onInitText("文档校正检测失败");
-            }
-        });
+
+        // TODO 通过 MLFrame + bitmap 获取 MLFrame对象
+
+        // TODO 通过文档校正分析器对象 MLDocumentSkewCorrectionAnalyzer ，调用异步分析方法，并添加成功OnSuccessListener和失败OnFailureListener回调
+
+        // TODO 分析成功，则调用 onSkewDetect(xxx,xxx,xxx) 方法，开始稳定校正
+
+        // TODO 分析失败，则 调用 onInitText("文档校正检测失败") 方法
     }
 
     private void onSkewDetect(MLDocumentSkewCorrectionAnalyzer analyzer, MLFrame frame, MLDocumentSkewDetectResult detectResult) {
         Point leftTop = detectResult.getLeftTopPosition();
         Point rightTop = detectResult.getRightTopPosition();
-        Point leftBottom = detectResult.getLeftBottomPosition();
         Point rightBottom = detectResult.getRightBottomPosition();
+        Point leftBottom = detectResult.getLeftBottomPosition();
         List<Point> coordinates = new ArrayList<>();
         coordinates.add(leftTop);
         coordinates.add(rightTop);
@@ -167,6 +147,4 @@ public class MLActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

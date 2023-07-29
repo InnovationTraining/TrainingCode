@@ -52,10 +52,10 @@ public class PushActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    // 从agconnect-services.json文件中读取APP_ID
-                    String app_Id = AGConnectInstance.getInstance().getOptions().getString("client/app_id");
-                    // 输入token标识"HCM"
-                    String token = HmsInstanceId.getInstance(PushActivity.this).getToken(app_Id, "HCM");
+                    // TODO 通过 AGConnectInstance 从 agconnect-services.json 中获取 APP_ID
+
+                    // TODO 通过 HmsInstanceId 获取 Token，其中的参数为上一步中获取的 APP_ID 值，以及固定标识 "HCM"
+                    String token = "";
                     Log.e("--TrainingPush--", "token: " + token);
 
                     // 判断token是否为空
@@ -67,7 +67,7 @@ public class PushActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } catch (ApiException e) {
+                } catch (Exception e) {
                     Log.e("--TrainingPush--", "获取Token失败：" + e);
                 }
             }

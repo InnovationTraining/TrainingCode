@@ -88,70 +88,46 @@ public class LocationActivity extends AppCompatActivity {
                     && ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this,
-                    "android.permission.ACCESS_BACKGROUND_LOCATION") != PackageManager.PERMISSION_GRANTED) {
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 String[] strings = {Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        "android.permission.ACCESS_BACKGROUND_LOCATION"};
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION};
                 ActivityCompat.requestPermissions(this, strings, 2);
             }
         }
     }
 
     private void onCheckLocation() {
-        SettingsClient mSettingsClient = LocationServices.getSettingsClient(this);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        LocationRequest mLocationRequest = new LocationRequest();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-        // 检查设备定位设置
-        mSettingsClient.checkLocationSettings(locationSettingsRequest)
-                // 检查设备定位设置接口调用成功监听
-                .addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
-                    @Override
-                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                        LocationSettingsStates locationSettingsStates =
-                                locationSettingsResponse.getLocationSettingsStates();
-                        onInitText("定位是否打开：" + locationSettingsStates.isLocationUsable());
-                    }
-                })
-                // 检查设备定位设置接口失败监听回调
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        onInitText("定位没有打开,请到设置中打开");
-                    }
-                });
+        // TODO 通过 LocationServices 获取 SettingsClient 对象
+
+        // TODO 创建定位设置请求构造器 LocationSettingsRequest.Builder
+
+        // TODO 给构造器设置定位请求对象 LocationRequest
+
+        // TODO 通过构造器获取定位请求对象 LocationSettingsRequest
+
+        // TODO 通过 SettingsClient 调用检查设备定位设置，并添加成功 OnSuccessListener 和失败 OnFailureListener 回调
+
+        // TODO 在成功方法中，通过 locationSettingsStates.isLocationUsable() 判断定位是否打开
+
+        // TODO 在失败方法中，调用 onInitText("定位没有打开,请到设置中打开") 方法
+
     }
 
     private void onGetLocation() {
-        // 实例化fusedLocationProviderClient对象
-        if (null == mFusedLocationProviderClient) {
-            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        }
-        // 定位模式选择
-        LocationRequest mLocationRequest = new LocationRequest();
-        // 设置定位类型
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        // 设置回调次数为1
-        // mLocationRequest.setNumUpdates(1);
-        // 设置位置更新的间隔（单位：毫秒）
-        mLocationRequest.setInterval(10000);
+        // TODO 通过 LocationServices 实例化 mFusedLocationProviderClient 对象
 
-        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // TODO: 接口调用成功的处理
-                        onInitText("启动定位成功，开始获取定位信息");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        // TODO: 接口调用失败的处理
-                        onInitText("启动定位失败");
-                    }
-                });
+        // TODO 创建定位请求参数 LocationRequest
+
+        // TODO 定位请求参数设置定位类型
+
+        // TODO 定位请求参数设置位置更新的间隔（单位：毫秒）为 10000 即 10s
+
+        // TODO 通过实例化的对象 mFusedLocationProviderClient ，调用启动定位方法，添加回调 mLocationCallback，并添加结果成功 OnSuccessListener 和失败 OnFailureListener 回调
+
+        // TODO 在成功方法中，调用 onInitText("启动定位成功，开始获取定位信息")
+
+        // TODO 在失败方法中，调用 onInitText("启动定位失败")
 
     }
 

@@ -88,98 +88,63 @@ public class IapActivity extends AppCompatActivity {
      * 判断是否支持IAP
      */
     private void isEnvReady() {
-        Task<IsEnvReadyResult> task = Iap.getIapClient(this).isEnvReady();
-        task.addOnSuccessListener(new OnSuccessListener<IsEnvReadyResult>() {
-            @Override
-            public void onSuccess(IsEnvReadyResult isEnvReadyResult) {
-                Toast.makeText(IapActivity.this, "支持应用内支付服务", Toast.LENGTH_SHORT).show();
-                // Consumable_01
-                productIdList.add("training_product_01");
-                productIdList.add("training_product_03");
-                onGetPurchases();
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(IapActivity.this, "不支持应用内支付服务", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // TODO 通过 Iap 调用应用是否支持应用内支付服务，并添加成功 OnSuccessListener 和失败 OnFailureListener 回调
+
+        // TODO 在回调的判断成功方法中，调用 Toast.makeText(IapActivity.this, "支持应用内支付服务", Toast.LENGTH_SHORT).show(); 弹框提示
+
+        // TODO 在回调的判断成功方法中，给 productIdList 集合添加消耗型商品 Id: ”training_consume_01“ ”training_consume_02“ ”training_consume_03“
+
+        // TODO 在回调的判断成功方法中，添加完商品 Id 后，调用 获取商品方法 onGetPurchases()
+
+        // TODO 在回调的判断失败方法中，调用Toast.makeText(IapActivity.this, "不支持应用内支付服务", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
      * 获取商品
      */
     private void onGetPurchases() {
-        ProductInfoReq req = new ProductInfoReq();
-        // priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
-        req.setPriceType(0);
-        req.setProductIds(productIdList);
-        // 获取调用接口的Activity对象
-        // 调用obtainProductInfo接口获取AppGallery Connect网站配置的商品的详情信息
-        Task<ProductInfoResult> task = Iap.getIapClient(this).obtainProductInfo(req);
-        task.addOnSuccessListener(new OnSuccessListener<ProductInfoResult>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onSuccess(ProductInfoResult result) {
-                // 获取接口请求成功时返回的商品详情信息
-                Log.i(TAG, "应用内支付~获取商品成功");
-                mItemData.clear();
-                mItemData.addAll(result.getProductInfoList());
-                if (mIapAdapter != null) {
-                    mIapAdapter.notifyDataSetChanged();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Log.e(TAG, "应用内支付~获取商品失败 ： " + e.getMessage());
-                if (e instanceof IapApiException) {
-                    IapApiException apiException = (IapApiException) e;
-                    int returnCode = apiException.getStatusCode();
-                    Log.e(TAG, "应用内支付~returnCode ： " + returnCode);
-                } else {
-                    // 其他外部错误
-                    Log.e(TAG, "应用内支付~Exception ： " + e.getMessage());
-                }
-            }
-        });
+        // TODO 创建商品请求对象 ProductInfoReq
+
+        // TODO 设置商品请求对象的商品类型：priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
+
+        // TODO 设置商品请求对象请求的商品列表 productIdList
+
+        // TODO 通过 Iap 获取 IapClient 对象，并调用 obtainProductInfo 接口获取AppGallery Connect网站配置的商品的详情信息，并添加成功 OnSuccessListener 和失败 OnFailureListener 回调
+
+        // TODO 在成功方法中，调用 onPurchasesNotifyAdapter 方法，刷新商品列表
+
+        // TODO 在失败方法中，调用 Log.e(TAG, "应用内支付~Exception ： " + e.getMessage()) 打印错误日志
+
+    }
+
+    private void onPurchasesNotifyAdapter(ProductInfoResult result){
+        Log.i(TAG, "应用内支付~获取商品成功");
+        mItemData.clear();
+        mItemData.addAll(result.getProductInfoList());
+        if (mIapAdapter != null) {
+            mIapAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
      * 购买商品
      */
     private void onBuyPurchases(String productId) {
-        // 构造一个PurchaseIntentReq对象
-        PurchaseIntentReq req = new PurchaseIntentReq();
-        // 通过createPurchaseIntent接口购买的商品必须是您在AppGallery Connect网站配置的商品。
-        req.setProductId(productId);//Consumable_01
-        // priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
-        req.setPriceType(0);
-        req.setDeveloperPayload("testPurchases");
-        // 调用createPurchaseIntent接口创建托管商品订单
-        Task<PurchaseIntentResult> task = Iap.getIapClient(this).createPurchaseIntent(req);
-        task.addOnSuccessListener(new OnSuccessListener<PurchaseIntentResult>() {
-            @Override
-            public void onSuccess(PurchaseIntentResult result) {
-                // 获取创建订单的结果
-                Log.e(TAG, "应用内支付~调用支付页面");
-                Status status = result.getStatus();
-                if (status.hasResolution()) {
-                    try {
-                        // 启动IAP返回的收银台页面
-                        status.startResolutionForResult(IapActivity.this, 8888);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(IapActivity.this, "应用内支付~购买失败", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // TODO 创建商品购买请求对象 PurchaseIntentReq
+
+        // TODO 设置商品购买请求对象的商品类型：priceType: 0：消耗型商品; 1：非消耗型商品; 2：订阅型商品
+
+        // TODO 设置商品购买请求对象请求的商品 productId
+
+        // TODO 设置商品购买请求对象 payload
+
+        // TODO 通过 Iap 获取 IapClient 对象，并调用 createPurchaseIntent 方法发起此类商品的购买请求，并添加成功 OnSuccessListener 和失败 OnFailureListener 回调
+
+        // TODO 在成功方法中，通过返回结果的 Status 启动IAP返回的收银台页面
+
+        // TODO 在失败方法中，调用 Toast.makeText(IapActivity.this, "应用内支付~购买失败", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

@@ -55,66 +55,30 @@ public class AdsActivity extends AppCompatActivity {
      */
     private void onGetBannerView() {
         // 设置广告位ID和广告尺寸，"testw6vs28auh3"为测试专用的广告位ID
-        mBannerView.setAdId(getString(R.string.banner_ads_id));
-        mBannerView.setBannerAdSize(BannerAdSize.BANNER_SIZE_360_57);
-        // 设置轮播时间间隔为60秒
-        mBannerView.setBannerRefresh(60);
-        // 创建广告请求，加载广告
-        AdParam adParam = new AdParam.Builder().build();
-        mBannerView.loadAd(adParam);
-        mBannerView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // 广告加载成功时调用
-            }
+        // TODO 给Banner广告View mBannerView 设置广告 Id
 
-            @Override
-            public void onAdFailed(int errorCode) {
-                // 广告加载失败时调用
-                Log.e("---Banner---", "load fail errorCode : " + errorCode);
-            }
+        // TODO 给Banner广告View mBannerView 设置 Banner 大小
 
-            @Override
-            public void onAdOpened() {
-                // 广告打开时调用
-            }
+        // TODO 给Banner广告View mBannerView 设置轮播时间间隔为60秒
 
-            @Override
-            public void onAdClicked() {
-                // 广告点击时调用
-            }
+        // TODO 创建广告请求 AdParam 对象
 
-            @Override
-            public void onAdLeave() {
-                // 广告离开应用时调用
-            }
+        // TODO mBannerView加载广告
 
-            @Override
-            public void onAdClosed() {
-                // 广告关闭时调用
-            }
-        });
+        // TODO 给 mBannerView 添加广告监听 AdListener
+
     }
 
     /**
      * 加载激励广告
      */
     private void onLoadRewardAd() {
-        mRewardAd = new RewardAd(this, getString(R.string.reward_ads_id));
-        mRewardAd.loadAd(new AdParam.Builder().build(), new RewardAdLoadListener() {
-            @Override
-            public void onRewardedLoaded() {
-                // 激励广告加载成功
-                if (mRewardAd.isLoaded()) {
-                    mRewardAd.show(AdsActivity.this, statusListener);
-                }
-            }
+        // TODO 创建 RewardAd 对象，并赋值给 mRewardAd
 
-            @Override
-            public void onRewardAdFailedToLoad(int errorCode) {
-                // 激励广告加载失败
-            }
-        });
+        // TODO 通过 mRewardAd 加载广告，并添加监听事件 RewardAdLoadListener
+
+        // TODO 在事件的加载完成方法中，判断激励广告是否加载成功，如果成功，则调用显示方法
+
     }
 
     private final RewardAdStatusListener statusListener = new RewardAdStatusListener() {

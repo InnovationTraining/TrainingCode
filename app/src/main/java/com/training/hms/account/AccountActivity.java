@@ -38,15 +38,13 @@ public class AccountActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            Task<AuthAccount> authAccountTask = AccountAuthManager.parseAuthResultFromIntent(result.getData());
-            if (authAccountTask.isSuccessful()) {
-                // 登录成功，获取到登录帐号信息对象authAccount
-                AuthAccount authAccount = authAccountTask.getResult();
-                onDealAuthAccount(authAccount);
-            } else {
-                // 登录失败，status code标识了失败的原因，请参见API参考中的错误码了解详细错误原因
-                onInitText("登录失败：" + authAccountTask.getException().getMessage());
-            }
+            // TODO 通过 AccountAuthManager.parseAuthResultFromIntent 方法，解析 result 中 intent数据
+
+            // TODO 解析出的数据调用 isSuccessful() 方法，判断是否登录成功
+
+            // TODO 如果登录成功，则通过解析出的数据，获取 AuthAccount 数据对象，并调用 onDealAuthAccount(xx)方法
+
+            // TODO 如果登录失败，则调用 onInitText("登录失败：")
         }
     });
 
@@ -87,80 +85,56 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void onIdTokenSignIn() {
-        mAccountAuthParams = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
-                .setEmail()
-                .setIdToken()
-                .createParams();
-        AccountAuthService mAccountAuthService = AccountAuthManager.getService(this, mAccountAuthParams);
-        launcher.launch(mAccountAuthService.getSignInIntent());
+        // TODO 通过 AccountAuthParamsHelper 创建账号 IdToken 授权模式的参数对象 mAccountAuthParams
+
+        // TODO 通过 AccountAuthManager.getService 方法获取 AccountAuthService 对象
+
+        // TODO 使用 launcher.launch 方法，调用启动授权页面，参数为 AccountAuthService 中登录的 Intent 对象
+
+
     }
 
     private void onSilentSignIn() {
-        mAccountAuthParams = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
-                .setEmail()
-                .setIdToken()
-                .createParams();
-        mAccountAuthService = AccountAuthManager.getService(this, mAccountAuthParams);
-        Task<AuthAccount> task = mAccountAuthService.silentSignIn();
-        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
-            @Override
-            public void onSuccess(AuthAccount authAccount) {
-                onDealAuthAccount(authAccount);
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                // 静默登录失败，使用getSignInIntent()方法进行前台显式登录
-                if (e instanceof ApiException) {
-                    Intent signInIntent = mAccountAuthService.getSignInIntent();
-                    // 如果应用是全屏显示，即顶部无状态栏的应用，需要在Intent中添加如下参数：
-                    // intent.putExtra(CommonConstant.RequestParams.IS_FULL_SCREEN, true);
-                    // 具体详情可以参见应用调用登录接口的时候是全屏页面，为什么在拉起登录页面的过程中顶部的状态栏会闪一下？应该如何解决？
-                    signInIntent.putExtra(CommonConstant.RequestParams.IS_FULL_SCREEN, true);
-                    // startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
-                    launcher.launch(signInIntent);
-                }
-            }
-        });
+        // TODO 通过 AccountAuthParamsHelper 创建账号 IdToken 授权模式的参数对象 mAccountAuthParams
+
+        // TODO 通过 AccountAuthManager.getService方 法获取 AccountAuthService 对象
+
+        // TODO 通过 AccountAuthService 调用静默登录方法，并获取返回结果
+
+        // TODO 给返回结果添加成功 OnSuccessListener 和失败 OnFailureListener 的回调方法
+
+        // TODO 如果成功，则在成功的回调方法中，调用 onDealAuthAccount(xx) 方法
+
+        // TODO 如果失败，则调用 onIdTokenSignIn() 方法
+
     }
 
     private void onSignOut() {
         if (null == mAccountAuthService) {
             return;
         }
-        Task<Void> task = mAccountAuthService.signOut();
-        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                onInitText("退出登录成功");
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                onInitText("退出登录失败");
-            }
-        });
+        // TODO 通过 mAccountAuthService 调用退出登录方法
+
+        // TODO 添加成功和失败的回调
+
+        // TODO 如果成功，则调用 onInitText("退出登录成功")
+
+        // TODO 如果失败，则调用 onInitText("退出登录成功")
+
     }
 
     private void onCancelAuthorization() {
         if (null == mAccountAuthService) {
             return;
         }
-        Task<Void> task = mAccountAuthService.cancelAuthorization();
-        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                onInitText("取消授权成功");
-            }
-        });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                onInitText("取消授权失败");
-            }
-        });
+        // TODO 通过 mAccountAuthService 调用取消授权方法
+
+        // TODO 添加成功和失败的回调
+
+        // TODO 如果成功，则调用 onInitText("取消授权成功")
+
+        // TODO 如果失败，则调用 onInitText("取消授权失败")
+
     }
 
     private void onDealAuthAccount(AuthAccount authAccount) {
